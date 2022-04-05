@@ -2,80 +2,99 @@ import "./App.css";
 import axios from "axios";
 import Table from "./components/Table/Table.js";
 import { useState, useEffect } from "react";
-import { APIurl, agifyURL } from ".//config/constants.js";
-let cache = {};
+import { APIurl, agifyURL, books } from ".//config/constants.js";
+import { Button } from "@mui/material";
+
+let cache = {}; // initialize cache
+function mock_ages(length) {
+  //for testing if api is broken
+  return Array(length)
+    .fill()
+    .map(() => ({ age: 25 }));
+}
+console.log(books);
 function App() {
-  const [loader, setLoader] = useState(false);
-  const [newData, setNewData] = useState([]);
-  const [characters, setCharacters] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [pageToGo, setPageToGo] = useState(1);
   const [currentPage, setPage] = useState(1);
+  const [rows, setRows] = useState([]);
 
-  // namesObj-->array,
   useEffect(() => {
-    /////// Find current page in data, if it doesn't exist, fetch new one
-
-    const currentPageData = newData.find(
-      (page) => page.pageNumber === currentPage
-    );
-
+    const currentPageData = cache[currentPage]; //
+    let agifyQuery = "";
     const fetchData = async (currentPage) => {
-      cache[currentPage] = "a";
-      console.log(cache);
-      function mock_ages(length) {
-        return Array(length)
-          .fill()
-          .map(() => ({ age: 25 }));
-      }
+      // For testing purposes
 
-      let agifyQuery = "";
+      /////// Find current page in data, if it doesn't exist, fetch new one
       if (!currentPageData) {
         try {
           const response = await axios.get(`${APIurl}page=${currentPage}`, {});
           // Getting names for agify
+
           for (let i = 0; i < response.data.length; i++) {
+            /*  for (let j = 0; j < response.data[i]["books"].length; j++) {
+              response.data[i]["books"] =
+                books[
+                  response.data[i].books[
+                    response.data[i].books[j].length - 1
+                  ].slice(-1)
+                ];
+            } */
+            //  console.log(response.data[0].books);
+            for (let j = 0; j < response.data[i].books.length; j++) {
+              console.log(response.data[i].books.length);
+              /* response.data[i].books[j] =
+                books[
+                  response.data[i].books[
+                    response.data[i].books[j].length - 1
+                  ].slice(-1)
+                ]; */
+              /* 
+              console.log(
+                books[
+                  response.data[i].books[
+                    response.data[i].books[j].length - 1
+                  ].slice(-1)
+                ]
+              ); */
+            }
+
             if (response.data[i].name) {
               agifyQuery += `name[]=${response.data[i].name
                 .split(" ")
                 .join("")}&`;
             }
           }
-          // testing
+          // FOR TESTING
           const ages_response = { data: mock_ages(response.data.length) };
-          // Fetching ages
-          /*  const ages_response = await axios.get(
+          // Fetching ages          DON'T DELETE
+          /* const ages_response = await axios.get(
             `${agifyURL}?${agifyQuery}`,
             {}
           ); */
+
+          // Mapping ages
           for (let i = 0; i < ages_response.data.length; i++) {
             response.data[i].age = ages_response.data[i].age;
           }
-          console.log(response.data);
-          //fetchAges();
+
           // Save the results for caching
-          setNewData([
-            ...newData,
-            { pageNumber: currentPage, data: response.data },
-          ]);
-          // Make the table show the new data
+          cache[`${currentPage}`] = response.data;
 
-          setCharacters(response.data);
-
-          setLoader(true);
-
-          // Store names in array for batch query
-          let array = [];
-          for (let i = 0; i < response.data.length; i++) {
-            if (response.data[i].name.length > 0) {
-              array.push(response.data[i].name);
+          // Add ids (needed for MUI DataGrid)
+          for (const key of Object.keys(cache)) {
+            for (let i = 0; i < cache[key].length; i++) {
+              cache[key][i]["id"] = i + 1 + (key - 1) * 10;
             }
           }
+          // Make the table show the new data
+          setRows(cache[`${currentPage}`]);
         } catch (e) {
-          //alert()
           console.log(e);
-        } finally {
         }
       } else {
-        setCharacters(currentPageData.data);
+        // Get from cache
+        setRows(cache[`${currentPage}`]);
       }
     };
 
@@ -85,29 +104,71 @@ function App() {
   return (
     <div className="App">
       <div>
-        <button
+        <p>
+          Go to page:{" "}
+          <input
+            min={1}
+            max={214}
+            onChange={(event) => {
+              if (event.target.value) {
+                setPageToGo(event.target.value);
+              }
+            }}
+            type="number"
+          ></input>{" "}
+          <Button onClick={() => setPage(pageToGo)} variant="outlined">
+            Go!
+          </Button>
+        </p>
+        <Button
+          variant="outlined"
           onClick={() => {
-            setPage(currentPage - 1);
+            setPage(1);
           }}
         >
-          Previous Page
-        </button>{" "}
-        <button
+          1
+        </Button>{" "}
+        <Button
+          variant="outlined"
           onClick={() => {
-            setPage(currentPage + 1);
+            if (currentPage === 1) {
+              setPage(214);
+            } else {
+              setPage(currentPage - 1);
+            }
           }}
         >
-          Next Page
-        </button>{" "}
+          Previous
+        </Button>{" "}
+        <Button
+          variant="outlined"
+          onClick={() => {
+            if (currentPage === 214) {
+              setPage(1);
+            } else {
+              setPage(currentPage + 1);
+            }
+          }}
+        >
+          Next
+        </Button>{" "}
+        <Button
+          variant="outlined"
+          onClick={() => {
+            setPage(214);
+          }}
+        >
+          214
+        </Button>{" "}
       </div>
-
-      {loader ? (
+      <p> {currentPage} of 214</p>
+      {!isLoading ? (
         <div>
           <Table
-            //ages={namesObject}
-            characters={characters}
+            //   isLoading={isLoading}
+            rows={rows}
+            data={cache}
             currentPage={currentPage}
-            setCharacters={setCharacters}
           ></Table>
         </div>
       ) : null}

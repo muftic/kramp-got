@@ -32,7 +32,6 @@ export const columns = [
   {
     field: "age",
     headerName: "Age",
-    type: "number",
     editable: true,
   },
   {
@@ -98,12 +97,4 @@ export const columns = [
     headerName: "URL",
     editable: true,
   },
-
-  /*   {
-    field: "TEST",
-    headerName: "Test",
-    // valueGetter: (params) => `${fetchAge(params.row.aliases)}`,
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-  }, */
 ];
