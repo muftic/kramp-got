@@ -1,5 +1,5 @@
 export const APIurl = "https://anapioficeandfire.com/api/characters?";
-
+export const agifyURL = "https://api.agify.io";
 export const books = [
   "A Game of Thrones",
   "A Clash of Kings",
@@ -22,10 +22,11 @@ export const columns = [
     field: "aliases",
     headerName: "Aliases",
     editable: true,
+    width: 200,
   },
   {
-    field: "allegiences",
-    headerName: "Allegiences",
+    field: "titles",
+    headerName: "Titles",
     editable: true,
   },
   {
@@ -34,6 +35,17 @@ export const columns = [
     type: "number",
     editable: true,
   },
+  {
+    field: "playedBy",
+    headerName: "Played By",
+    editable: true,
+  },
+  {
+    field: "allegiences",
+    headerName: "Allegiences",
+    editable: true,
+  },
+
   {
     field: "books",
     headerName: "Books",
@@ -66,11 +78,6 @@ export const columns = [
   },
 
   {
-    field: "playedBy",
-    headerName: "Played By",
-    editable: true,
-  },
-  {
     field: "povBooks",
     headerName: "PoV Books",
     editable: true,
@@ -80,11 +87,7 @@ export const columns = [
     headerName: "Spouse",
     editable: true,
   },
-  {
-    field: "titles",
-    headerName: "Titles",
-    editable: true,
-  },
+
   {
     field: "tvSeries",
     headerName: "Tv Series",
@@ -96,11 +99,11 @@ export const columns = [
     editable: true,
   },
 
-  {
+  /*   {
     field: "TEST",
     headerName: "Test",
     // valueGetter: (params) => `${fetchAge(params.row.aliases)}`,
     description: "This column has a value getter and is not sortable.",
     sortable: false,
-  },
+  }, */
 ];
