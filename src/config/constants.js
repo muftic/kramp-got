@@ -17,17 +17,19 @@ export const columns = [
     field: "name",
     headerName: "Name",
     editable: true,
+    minWidth: 160,
   },
   {
     field: "aliases",
     headerName: "Aliases",
     editable: true,
-    width: 200,
+    minWidth: 160,
   },
   {
     field: "titles",
     headerName: "Titles",
     editable: true,
+    minWidth: 160,
   },
   {
     field: "age",

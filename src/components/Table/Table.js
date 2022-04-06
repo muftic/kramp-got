@@ -4,14 +4,7 @@ import { columns } from "../../config/constants";
 export default function Table(props) {
   return (
     <div style={{ height: "60vw", width: "100%" }}>
-      <DataGrid
-        //  loading={props.isLoading}
-
-        autoHeight
-        pageSize={10}
-        rows={props.rows}
-        columns={columns}
-      />
+      <DataGrid autoHeight rows={props.rows} columns={columns} />
     </div>
   );
 }

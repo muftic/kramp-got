@@ -12,7 +12,7 @@ function mock_ages(length) {
     .fill()
     .map(() => ({ age: 25 }));
 }
-console.log(books);
+
 function App() {
   const [isLoading, setLoading] = useState(false);
   const [pageToGo, setPageToGo] = useState(1);
@@ -29,55 +29,28 @@ function App() {
       if (!currentPageData) {
         try {
           const response = await axios.get(`${APIurl}page=${currentPage}`, {});
-          // Getting names for agify
 
           for (let i = 0; i < response.data.length; i++) {
-            /*  for (let j = 0; j < response.data[i]["books"].length; j++) {
-              response.data[i]["books"] =
-                books[
-                  response.data[i].books[
-                    response.data[i].books[j].length - 1
-                  ].slice(-1)
-                ];
-            } */
-            //  console.log(response.data[0].books);
-            for (let j = 0; j < response.data[i].books.length; j++) {
-              console.log(response.data[i].books.length);
-              /* response.data[i].books[j] =
-                books[
-                  response.data[i].books[
-                    response.data[i].books[j].length - 1
-                  ].slice(-1)
-                ]; */
-              /* 
-              console.log(
-                books[
-                  response.data[i].books[
-                    response.data[i].books[j].length - 1
-                  ].slice(-1)
-                ]
-              ); */
-            }
-
+            // If character has name, add it to query
             if (response.data[i].name) {
               agifyQuery += `name[]=${response.data[i].name
                 .split(" ")
                 .join("")}&`;
             }
           }
-          // FOR TESTING
-          const ages_response = { data: mock_ages(response.data.length) };
-          // Fetching ages          DON'T DELETE
-          /* const ages_response = await axios.get(
-            `${agifyURL}?${agifyQuery}`,
-            {}
-          ); */
+          // Change book numbers to names
 
-          // Mapping ages
-          for (let i = 0; i < ages_response.data.length; i++) {
-            response.data[i].age = ages_response.data[i].age;
+          // const ages_response = { data: mock_ages(response.data.length) };DON'T DELETE
+          // Fetching ages
+          const agesResponse = await axios.get(`${agifyURL}?${agifyQuery}`, {});
+
+          // If character has a name, add the age from agify response (j counter)
+          for (let i = 0, j = 0; i < response.data.length; i++) {
+            if (response.data[i].name) {
+              response.data[i].age = agesResponse.data[j].age;
+              j++;
+            }
           }
-
           // Save the results for caching
           cache[`${currentPage}`] = response.data;
 
@@ -102,7 +75,7 @@ function App() {
   }, [currentPage]);
 
   return (
-    <div className="App">
+    <div id="App" className="App">
       <div>
         <p>
           Go to page:{" "}
@@ -162,6 +135,7 @@ function App() {
         </Button>{" "}
       </div>
       <p> {currentPage} of 214</p>
+
       {!isLoading ? (
         <div>
           <Table
