@@ -6,7 +6,7 @@ import { APIurl, agifyURL } from ".//config/constants.js";
 import { Button } from "@mui/material";
 
 let cache = {}; // initialize cache
-/* function mock_ages(length) {
+/* function mockAges(length) {
   //for testing if api is broken
   return Array(length)
     .fill()
@@ -36,7 +36,7 @@ function App() {
             }
           }
 
-          //const agesResponse = { data: mock_ages(response.data.length) };
+          //const agesResponse = { data: mockAges(response.data.length) };
 
           // Fetching ages
           const agesResponse = await axios.get(`${agifyURL}?${agifyQuery}`, {});
@@ -86,7 +86,7 @@ function App() {
             }}
             type="number"
           ></input>{" "}
-          <Button onClick={() => setPage(pageToGo)} variant="outlined">
+          <Button onClick={() => setPage(Number(pageToGo))} variant="outlined">
             Go!
           </Button>
         </p>
