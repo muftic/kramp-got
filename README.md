@@ -8,8 +8,11 @@ To minimize API requests
 -the application has a cache to store fetched data.
 -fetches only 10 characters per page/request
 
+### Netlify live link
+https://game-of-thrones-krump.netlify.app/
+
 ### Stack
--React, MaterialUI - styling and dataGrid, axios
+-React, MaterialUI - styling and dataGrid, Axios
 
 ### Order of procedures
 - fetch character data from https://anapioficeandfire.com/, extract names for agify query
