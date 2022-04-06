@@ -22,8 +22,6 @@ function App() {
     const currentPageData = cache[currentPage]; //
     let agifyQuery = "";
     const fetchData = async (currentPage) => {
-      // For testing purposes
-
       /////// Find current page in data, if it doesn't exist, fetch new one
       if (!currentPageData) {
         try {
@@ -37,9 +35,9 @@ function App() {
                 .join("")}&`;
             }
           }
-          // Change book numbers to names
 
-          // const ages_response = { data: mock_ages(response.data.length) };DON'T DELETE
+          //const agesResponse = { data: mock_ages(response.data.length) };
+
           // Fetching ages
           const agesResponse = await axios.get(`${agifyURL}?${agifyQuery}`, {});
 

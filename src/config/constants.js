@@ -12,7 +12,7 @@ export const books = [
 ];
 
 export const columns = [
-  { field: "id", headerName: "ID", width: 20 },
+  { field: "id", headerName: "ID", width: 60 },
   {
     field: "name",
     headerName: "Name",

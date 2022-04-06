@@ -1,15 +1,22 @@
 import React from "react";
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom"; for React <18
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { createRoot } from "react-dom/client";
 
-ReactDOM.render(
+// =React 18
+const container = document.getElementById("root");
+const root = createRoot(container);
+root.render(<App tab="home" />);
+
+// <React 18
+/* ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
   document.getElementById("root")
-);
+); */
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
