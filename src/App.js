@@ -2,19 +2,18 @@ import "./App.css";
 import axios from "axios";
 import Table from "./components/Table/Table.js";
 import { useState, useEffect } from "react";
-import { APIurl, agifyURL, books } from ".//config/constants.js";
+import { APIurl, agifyURL } from ".//config/constants.js";
 import { Button } from "@mui/material";
 
 let cache = {}; // initialize cache
-function mock_ages(length) {
+/* function mock_ages(length) {
   //for testing if api is broken
   return Array(length)
     .fill()
     .map(() => ({ age: 25 }));
-}
+} */
 
 function App() {
-  const [isLoading, setLoading] = useState(false);
   const [pageToGo, setPageToGo] = useState(1);
   const [currentPage, setPage] = useState(1);
   const [rows, setRows] = useState([]);
@@ -135,17 +134,14 @@ function App() {
         </Button>{" "}
       </div>
       <p> {currentPage} of 214</p>
-
-      {!isLoading ? (
-        <div>
-          <Table
-            //   isLoading={isLoading}
-            rows={rows}
-            data={cache}
-            currentPage={currentPage}
-          ></Table>
-        </div>
-      ) : null}
+      <div>
+        <Table
+          //   isLoading={isLoading}
+          rows={rows}
+          data={cache}
+          currentPage={currentPage}
+        ></Table>
+      </div>
     </div>
   );
 }
