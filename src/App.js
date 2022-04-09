@@ -26,10 +26,11 @@ function App() {
       if (!currentPageData) {
         try {
           const response = await axios.get(`${APIurl}page=${currentPage}`, {});
-
-          for (let i = 0; i < response.data.length; i++) {
+          let responseLength = response.data.length;
+          for (let i = 0; i < responseLength; i++) {
             // If character has name, add it to query
-            if (response.data[i].name) {
+            let characterName = response.data[i].name;
+            if (characterName) {
               agifyQuery += `name[]=${response.data[i].name
                 .split(" ")
                 .join("")}&`;
@@ -42,7 +43,8 @@ function App() {
           const agesResponse = await axios.get(`${agifyURL}?${agifyQuery}`, {});
 
           // If character has a name, add the age from agify response (j counter)
-          for (let i = 0, j = 0; i < response.data.length; i++) {
+
+          for (let i = 0, j = 0; i < responseLength; i++) {
             if (response.data[i].name) {
               response.data[i].age = agesResponse.data[j].age;
               j++;
@@ -53,8 +55,10 @@ function App() {
 
           // Add ids (needed for MUI DataGrid)
           for (const key of Object.keys(cache)) {
-            for (let i = 0; i < cache[key].length; i++) {
-              cache[key][i]["id"] = i + 1 + (key - 1) * 10;
+            let cacheKeysLength = cache[key].length;
+            for (let i = 0; i < cacheKeysLength; i++) {
+              let charInCacheId = cache[key][i]["id"];
+              charInCacheId = i + 1 + (key - 1) * 10;
             }
           }
           // Make the table show the new data
